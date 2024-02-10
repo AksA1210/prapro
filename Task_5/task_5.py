@@ -54,8 +54,6 @@ def download_images(parquet_file, output_directory, max_images=10000):
     for i in range(len(downloader.urls)):
         if downloaded_count >= max_images:
             break
-
-    
         try:
             local_path = downloader[i]
             if local_path:
@@ -68,4 +66,3 @@ if __name__ == "__main__":
     parquet_file = "C:/Users/cusat/Desktop/links.parquet"
     output_directory = "C:/Users/cusat/Desktop/Output"
     download_images(parquet_file, output_directory)
-
