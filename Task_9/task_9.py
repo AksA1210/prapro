@@ -1,65 +1,63 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Given data
 x = np.array([1,2,3,4,5,6,7,8,9,10])
 y = np.array([2,4,6,8,10,12,14,16,18,20])
 
-# Step 1: Define the linear regression model
-def linear_regression(x, w, b):
-    return w * x + b
+def linear_regression(x, weight, bias):
+    return weight * x + bias
 
-# Step 2: Define the loss function (Mean Squared Error)
+# MSE
 def mse_loss(y_true, y_pred):
     return np.mean((y_true - y_pred) ** 2)
 
-# Step 3: Compute the gradient of the loss function
-def compute_gradients(x, y, w, b):
+# Gradient of the loss function
+def compute_gradients(x, y, weight, bias):
     # Predictions
-    y_pred = linear_regression(x, w, b)
+    y_pred = linear_regression(x, weight, bias)
     
     # Gradients
-    dw = -2 * np.mean(x * (y - y_pred))  # Gradient with respect to weight
-    db = -2 * np.mean(y - y_pred)        # Gradient with respect to bias
+    d_weight = -2 * np.mean(x * (y - y_pred))  
+    d_bias = -2 * np.mean(y - y_pred)        
     
-    return dw, db
+    return d_weight, d_bias
 
-# Step 4: Update the model parameters using gradient descent
-def gradient_descent(x, y, w, b, learning_rate, num_iterations):
+# Update the model parameters 
+def gradient_descent(x, y, weight, bias, learning_rate, num_iterations):
     losses = []
     for i in range(num_iterations):
         # Compute gradients
-        dw, db = compute_gradients(x, y, w, b)
+        d_weight, d_bias = compute_gradients(x, y, weight, bias)
         
         # Update parameters
-        w -= learning_rate * dw
-        b -= learning_rate * db
+        weight -= learning_rate * d_weight
+        bias -= learning_rate * d_bias
         
-        # Compute current loss
-        loss = mse_loss(y, linear_regression(x, w, b))
+        # Compute loss
+        loss = mse_loss(y, linear_regression(x, weight, bias))
         losses.append(loss)
         
-        # Plot the fit after every iteration
+        # Plot the fit 
         plt.figure()
         plt.scatter(x, y)
-        plt.plot(x, linear_regression(x, w, b), color='red')
+        plt.plot(x, linear_regression(x, weight, bias), color='green')
         plt.title(f'Iteration {i+1}, Loss: {loss:.2f}')
         plt.xlabel('x')
         plt.ylabel('y')
         plt.show()
         
-    return w, b, losses
+    return weight, bias, losses
 
-# Step 5: Plot the fit after every iteration using gradient descent
+# Plot the fit after every iteration using GD
 learning_rate = 0.01
 num_iterations = 10
-initial_w = 0  # Initial weight
-initial_b = 0  # Initial bias
+initial_weight = 0  
+initial_bias = 0  
 
-# Perform gradient descent
-final_w, final_b, losses = gradient_descent(x, y, initial_w, initial_b, learning_rate, num_iterations)
+# Perform GD
+final_weight, final_bias, losses = gradient_descent(x, y, initial_weight, initial_bias, learning_rate, num_iterations)
 
-# Plot the loss curve
+# Plot loss curve
 plt.figure()
 plt.plot(range(num_iterations), losses)
 plt.xlabel('Iterations')
@@ -67,7 +65,6 @@ plt.ylabel('Loss')
 plt.title('Loss Curve')
 plt.show()
 
-# Print final parameters
-print("Final parameters:")
-print("Weight:", final_w)
-print("Bias:", final_b)
+print("Final parameters :")
+print("Weight :", final_weight)
+print("Bias :", final_bias)
