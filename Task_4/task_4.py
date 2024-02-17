@@ -33,15 +33,6 @@ def download_images(parquet_file, output_directory, max_images=10000):
                     last_check_time = current_time
         except Exception as e:
             print(f"Error downloading image from {url}: {str(e)}")
-    
-    elapsed_time = time.time() - start_time
-    cpu_usage = psutil.cpu_percent()
-    network_usage = psutil.net_io_counters()
-
-    print(f"Total Elapsed Time: {elapsed_time} seconds")
-    print(f"Final CPU Usage: {cpu_usage}%")
-    print(f"Final Network Usage: {network_usage.bytes_sent} bytes sent, {network_usage.bytes_recv} bytes received")
-
     display_images(output_directory)
 
 
