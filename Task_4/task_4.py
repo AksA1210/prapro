@@ -7,7 +7,7 @@ from PIL import Image
 
 def download_images(parquet_file, output_directory, max_images=10000):
     table = pq.read_table(parquet_file)
-    urls = table.column('URL ').to_pylist()
+    urls = table.column('URL').to_pylist()
     os.makedirs(output_directory, exist_ok=True)
 
     downloaded_count = 0
@@ -51,3 +51,4 @@ def display_images(directory):
 parquet_file = "C:/Users/cusat/Desktop/links.parquet"
 output_directory = "C:/Users/cusat/Desktop/Output"
 download_images(parquet_file, output_directory)
+
