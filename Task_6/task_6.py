@@ -5,6 +5,7 @@ import requests
 from concurrent.futures import ThreadPoolExecutor
 from PIL import Image
 
+
 class Downloader:
     def __init__(self, parquet_file, output_directory, max_images=100, max_threads=10):
         self.parquet_file = parquet_file
@@ -16,8 +17,8 @@ class Downloader:
         try:
             response = requests.get(url)
             if response.status_code == 200:
-                fname = url.split('/')[-1]
-                with open(os.path.join(self.output_directory, fname), 'wb') as f:
+                fname = url.split("/")[-1]
+                with open(os.path.join(self.output_directory, fname), "wb") as f:
                     f.write(response.content)
                 return fname
         except Exception as e:
@@ -29,7 +30,7 @@ class Downloader:
 
         with ThreadPoolExecutor(max_workers=self.max_threads) as executor:
             table = pq.read_table(self.parquet_file)
-            urls = table.column('URL ').to_pylist()[:self.max_images]
+            urls = table.column("URL ").to_pylist()[: self.max_images]
 
             start_time = time.time()
             futures = []
@@ -46,7 +47,9 @@ class Downloader:
 
     def display_images(self):
         files = os.listdir(self.output_directory)
-        image_files = [file for file in files if file.endswith(('.jpg', '.jpeg', '.png', '.gif'))]
+        image_files = [
+            file for file in files if file.endswith((".jpg", ".jpeg", ".png", ".gif"))
+        ]
         for image_file in image_files:
             file_path = os.path.join(self.output_directory, image_file)
             try:
@@ -54,6 +57,7 @@ class Downloader:
                 image.show()
             except Exception as e:
                 print(f"Error displaying image {file_path}: {str(e)}")
+
 
 parquet_file = "C:/Users/cusat/Desktop/links.parquet"
 output_directory = "C:/Users/cusat/Desktop/Output"

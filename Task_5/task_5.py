@@ -2,19 +2,22 @@ import pyarrow.parquet as pq
 import requests
 import os
 
+
 class Downloader:
     def __init__(self, pq_file: str):
         self.pq_file = pq_file
         self.table = pq.read_table(pq_file)
         # Find column names in the schema and normalize them
-        self.urls = self._find_column_names('URL')
+        self.urls = self._find_column_names("URL")
 
     def __getitem__(self, key):
         # Handle single index or slice
         if isinstance(key, int):
             return self._download_image(key)
         elif isinstance(key, slice):
-            return [self._download_image(i) for i in range(*key.indices(len(self.urls)))]
+            return [
+                self._download_image(i) for i in range(*key.indices(len(self.urls)))
+            ]
 
     def _find_column_names(self, column_name):
         normalized_column_name = column_name.strip().lower()
@@ -32,11 +35,13 @@ class Downloader:
                 filename = os.path.basename(url)
                 output_directory = os.path.dirname(self.pq_file)
                 file_path = os.path.join(output_directory, filename)
-                with open(file_path, 'wb') as f:
+                with open(file_path, "wb") as f:
                     f.write(response.content)
                 return file_path
             else:
-                print(f"Failed to download image from {url}. Status code: {response.status_code}")
+                print(
+                    f"Failed to download image from {url}. Status code: {response.status_code}"
+                )
         except Exception as e:
             print(f"Error downloading image from {url}: {str(e)}")
 

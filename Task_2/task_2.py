@@ -21,7 +21,7 @@ print(random_array)
 
 # Measure how long the creation takes
 duration = end - start
-print("Time taken for creation : ",duration,"seconds")
+print("Time taken for creation : ", duration, "seconds")
 
 # Convert the array into bytes
 array_bytes = random_array.tobytes()
